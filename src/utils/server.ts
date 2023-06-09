@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
-import {OpenApiValidator} from 'express-openapi-validator'
+import * as OpenApiValidator from 'express-openapi-validator'
 import {Express} from 'express-serve-static-core'
 import morgan from 'morgan'
 import morganBody from 'morgan-body'
@@ -22,26 +22,30 @@ export async function createServer(): Promise<Express> {
   
   server.use(bodyParser.json())
   
+  /* istanbul ignore next */
   if (config.morganLogger) {
     server.use(morgan(':method :url :status :response-time ms - :res[content-length]'))
   }
   
+  /* istanbul ignore next */
   if (config.morganBodyLogger) {
     morganBody(server)
   }
 
+  /* istanbul ignore next */
   if (config.exmplDevLogger) {
     server.use(expressDevLogger)
   }
   
   // setup API validator
   const validatorOptions = {
-    coerceTypes: true,
-    apiSpec: yamlSpecFile,
+    // coerceTypes: true,
+    apiSpec: './config/openapi.yml',
     validateRequests: true,
     validateResponses: true
   }
-  await new OpenApiValidator(validatorOptions).install(server)
+  // await new OpenApiValidator(validatorOptions).install(server)
+  server.use(OpenApiValidator.middleware(validatorOptions));
   
   // error customization, if request is invalid
   server.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

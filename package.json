@@ -23,7 +23,7 @@
     "dotenv-extended": "^2.8.0",
     "dotenv-parse-variables": "^0.3.1",
     "express": "^4.17.1",
-    "express-openapi-validator": "^3.16.7",
+    "express-openapi-validator": "^4.13.8",
     "morgan": "^1.10.0",
     "morgan-body": "^2.5.0",
     "swagger-routes-express": "^3.2.1",
